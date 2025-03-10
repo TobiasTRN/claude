@@ -166,7 +166,7 @@
         
         <div class="contact-form">
             <h2>Laissez-moi vos coordonnées</h2>
-            <form id="contactForm">
+            <form id="contactForm" action="https://formsubmit.co/t.terrien@comptoir-rhodanien.fr" method="POST">
                 <div class="form-group">
                     <label for="name">Nom et prénom *</label>
                     <input type="text" id="name" name="name" required>
@@ -192,11 +192,17 @@
                     <textarea id="message" name="message" rows="4"></textarea>
                 </div>
                 
+                <!-- Champs de configuration FormSubmit -->
+                <input type="hidden" name="_subject" value="Nouveau contact depuis votre carte de visite numérique">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="text" name="_honey" style="display:none">
+                
                 <button type="submit">Envoyer</button>
             </form>
             
             <div class="success-message" id="successMessage">
-                Merci pour vos coordonnées! Je vous contacterai très bientôt.
+                Merci pour vos coordonnées, au plaisir de se revoir !
             </div>
         </div>
     </div>
@@ -232,25 +238,27 @@ END:VCARD`;
             window.URL.revokeObjectURL(url);
         });
         
-        // Gestion du formulaire de contact
+        // Modification du gestionnaire d'événements pour le formulaire
+        // Le formulaire est maintenant géré par FormSubmit, mais nous gardons
+        // le code pour afficher le message de succès en cas de besoin
         document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            // Ne pas empêcher la soumission du formulaire
+            // FormSubmit prendra en charge l'envoi
             
-            // Ici vous intégreriez normalement du code pour envoyer les données à votre serveur
-            // Par exemple avec fetch() ou XMLHttpRequest
-            
-            // Pour cette démo, on affiche simplement le message de succès
-            document.getElementById('successMessage').style.display = 'block';
-            this.reset();
-            
-            // Faire défiler vers le message de succès
-            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
-            
-            // Masquer le message après quelques secondes
+            // Si vous voulez toujours afficher le message de succès localement,
+            // vous pouvez décommenter ces lignes et ajouter un champ _next à FormSubmit
+            /*
             setTimeout(function() {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 5000);
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+                
+                setTimeout(function() {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            }, 500);
+            */
         });
     </script>
 </body>
 </html>
+
